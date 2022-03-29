@@ -6,6 +6,7 @@ import Elysian.SpringBootExercise.model.Section;
 import Elysian.SpringBootExercise.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class SectionController {
     @Autowired
     SectionService sectionService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @GetMapping("/getSections")
     public ResponseEntity<?> getAllSections(){
 
@@ -30,6 +32,7 @@ public class SectionController {
         return ResponseEntity.badRequest().body(new MessageResponse("No sections found"));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @PostMapping("/create")
     public ResponseEntity<?> createSection(@RequestBody SectionRequest sectionRequest){
         Section section = sectionService.createSection(sectionRequest);
@@ -39,12 +42,14 @@ public class SectionController {
             return ResponseEntity.badRequest().body(new MessageResponse("Check your request body!"));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @PutMapping("/addSectionToStore")
     public ResponseEntity<?> addSectionToStore(@RequestParam("id") Long id, @RequestParam("store_id") Long storeId){
         Section section = sectionService.addSectionToStore(id,storeId);
         return ResponseEntity.ok("Section was added to the store");
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(@RequestParam("id") Long id){
         String result =  sectionService.deleteSection(id);

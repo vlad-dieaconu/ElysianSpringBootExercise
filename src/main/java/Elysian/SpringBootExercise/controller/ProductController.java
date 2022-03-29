@@ -6,6 +6,7 @@ import Elysian.SpringBootExercise.model.Section;
 import Elysian.SpringBootExercise.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @GetMapping("/getAllProducts")
     public ResponseEntity<?> getProducts() {
 
@@ -28,6 +30,7 @@ public class ProductController {
         return ResponseEntity.ok("?");
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @PostMapping("/create")
     public ResponseEntity<?> createProduct(@RequestBody ProductRequest productRequest) {
         Product product = productService.createProduct(productRequest);
@@ -36,12 +39,14 @@ public class ProductController {
         return ResponseEntity.ok("check req body");
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @PutMapping("/addProductToSection")
     public ResponseEntity<?> addProductToSection(@RequestParam("id") Long id, @RequestParam("section_id") Long sectionId) {
         Section section = productService.addProductToSection(id,sectionId);
         return ResponseEntity.ok(section);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteProduct(@RequestParam("id") Long id) {
          productService.delete(id);
