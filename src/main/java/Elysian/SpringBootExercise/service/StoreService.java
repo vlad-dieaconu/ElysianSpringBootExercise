@@ -1,7 +1,7 @@
 package Elysian.SpringBootExercise.service;
 
 import Elysian.SpringBootExercise.controller.request.StoreRequest;
-import Elysian.SpringBootExercise.exceptions.SectionNotFoundException;
+
 import Elysian.SpringBootExercise.exceptions.StoreNotFoundException;
 import Elysian.SpringBootExercise.model.Section;
 import Elysian.SpringBootExercise.model.Store;
